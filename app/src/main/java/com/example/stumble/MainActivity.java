@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button topPicksPageButton;
     private Button savedPageButton;
 
+    private RecyclerView recyclerView;
+    private String listingArray[], descriptionArray[];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         topPicksPageButton.setOnClickListener(this);
         savedPageButton = (Button)findViewById(R.id.savedPageButton);
         savedPageButton.setOnClickListener(this);
+        //To hide bar at the top
+        getSupportActionBar().hide();
     }
 
     @Override
@@ -71,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onActivityResult(ActivityResult result) {
                     if(result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-
                     }
                 }
             }
