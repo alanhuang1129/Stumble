@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Stumble</string>
+
+    <string-array name="listings">
+        <item>listing1</item>
+        <item>listing2</item>
+        <item>listing3</item>
+        <item>listing4</item>
+        <item>listing5</item>
+        <item>listing6</item>
+        <item>listing7</item>
+    </string-array>
+
+    <string-array name="listing_descriptions">
+        <item>description1</item>
+        <item>description2</item>
+        <item>description3</item>
+        <item>description4</item>
+        <item>description5</item>
+        <item>description6</item>
+        <item>description7</item>
+    </string-array>
+
 </resources>
