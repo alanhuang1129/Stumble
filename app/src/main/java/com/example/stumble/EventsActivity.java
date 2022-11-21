@@ -25,24 +25,31 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 
 public class EventsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private String listingArray[], descriptionArray[];
+//    private String listingArray[], descriptionArray[];
+    private List<MyDatabase.Listing> listings;
+    private MyDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
+        db = new MyDatabase(this);
+        listings = db.getSelectedData("event");
 
         recyclerView = findViewById(R.id.eventsRecyclerView);
 
-        listingArray = getResources().getStringArray(R.array.listings);
-        descriptionArray = getResources().getStringArray(R.array.listing_descriptions);
+//        listingArray = getResources().getStringArray(R.array.listings);
+//        descriptionArray = getResources().getStringArray(R.array.listing_descriptions);
 
-        MyAdapter myAdapter = new MyAdapter(this, listingArray, descriptionArray);
+//        MyAdapter myAdapter = new MyAdapter(this, listingArray, descriptionArray);
+        MyAdapter myAdapter = new MyAdapter(this, listings);
+
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         getSupportActionBar().hide();

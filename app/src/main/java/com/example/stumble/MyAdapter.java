@@ -10,13 +10,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    String listings[], descriptions[];
+//    String listings[], descriptions[];
+    private List<MyDatabase.Listing> listings;
     private Context context;
 
-    public MyAdapter(Context c, String listings[], String descriptions[]) {
+    public MyAdapter(Context c, List<MyDatabase.Listing>listings) {
         this.listings = listings;
-        this.descriptions = descriptions;
+//        this.listings = listings;
+//        this.descriptions = descriptions;
         context = c;
     }
 
@@ -30,13 +35,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.listingTitle.setText(listings[position]);
-        holder.listingDescription.setText(descriptions[position]);
+        holder.listingTitle.setText(listings.get(position).lName);
+        holder.listingTitle.setText(listings.get(position).lType);
+//        holder.listingTitle.setText(listings[position]);
+//        holder.listingDescription.setText(descriptions[position]);
     }
 
     @Override
     public int getItemCount() {
-        return listings.length;
+        return listings.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

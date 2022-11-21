@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +47,11 @@ public class MyDatabase {
         while (cursor.moveToNext()) {
             int index1 = cursor.getColumnIndex(Constants.NAME);
             int index2 = cursor.getColumnIndex(Constants.TYPE);
-            int index3 = cursor.getColumnIndex(Constants.LOCATION);
+//            int index3 = cursor.getColumnIndex(Constants.LOCATION);
             String activityName = cursor.getString(index1);
             String activityType = cursor.getString(index2);
-            String activityLocation = cursor.getString(index3);
-            queriedRows.add(new Listing(activityName, activityType, activityLocation));
+//            String activityLocation = cursor.getString(index3);
+            queriedRows.add(new Listing(activityName, activityType, "activityLocation"));
 //            buffer.append(activityName + " " + activityType + " " + activityLocation + "\n");
         }
 //        return buffer.toString();
