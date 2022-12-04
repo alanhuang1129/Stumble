@@ -1,5 +1,6 @@
 package com.example.stumble;
 
+//Constants for SQLiteDatabase
 public class Constants {
     public static final String DATABASE_NAME = "activitydatabase";
     public static final String TABLE_NAME = "ACTIVITYTABLE";

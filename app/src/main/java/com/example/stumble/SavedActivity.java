@@ -20,12 +20,10 @@ public class SavedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
         db = new MyDatabase(this);
+        //Get selected data of type saved and inflate the recycler view with the listings
         listings = db.getSelectedData("saved");
 
         recyclerView = findViewById(R.id.savedRecyclerView);
-
-//        listingArray = getResources().getStringArray(R.array.listings);
-//        descriptionArray = getResources().getStringArray(R.array.listing_descriptions);
 
         MyAdapter myAdapter = new MyAdapter(this, listings);
         recyclerView.setAdapter(myAdapter);

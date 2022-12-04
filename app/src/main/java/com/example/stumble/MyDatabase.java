@@ -36,6 +36,7 @@ public class MyDatabase {
         return cursor;
     }
 
+    //Get the list of listings by type
     public List<Listing> getSelectedData(String type) {
         SQLiteDatabase db = helper.getWritableDatabase();
         String[] columns = {Constants.NAME, Constants.TYPE};
@@ -52,12 +53,11 @@ public class MyDatabase {
             String activityType = cursor.getString(index2);
 //            String activityLocation = cursor.getString(index3);
             queriedRows.add(new Listing(activityName, activityType, "activityLocation"));
-//            buffer.append(activityName + " " + activityType + " " + activityLocation + "\n");
         }
-//        return buffer.toString();
         return queriedRows;
     }
 
+    //Delete row in database by name
     public int deleteRowByName(String name){
         SQLiteDatabase db = helper.getWritableDatabase();
         String[] whereArgs = {name};
@@ -65,6 +65,7 @@ public class MyDatabase {
         return count;
     }
 
+    //Listing struct modelled towards an individual listing
     class Listing {
         public String lName;
         public String lType;

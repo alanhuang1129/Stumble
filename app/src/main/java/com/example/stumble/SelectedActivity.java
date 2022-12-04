@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+//Activity responsible for acting as the page with the listing description and details
 public class SelectedActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
     private Button googleMapsButton;
@@ -54,6 +55,7 @@ public class SelectedActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
+        //Search on google maps
         switch (view.getId()) {
             case R.id.googleMapsButton:
                 Uri maps = Uri.parse("http://www.google.com/maps/search/" + titleTextView.getText() + "/@" +

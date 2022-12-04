@@ -20,12 +20,10 @@ public class DessertsAndDrinksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desserts_and_drinks);
         db = new MyDatabase(this);
+        //Get selected data of type desserts and inflate the recycler view with the listings
         listings = db.getSelectedData("desserts");
 
         recyclerView = findViewById(R.id.dessertsRecyclerView);
-
-//        listingArray = getResources().getStringArray(R.array.listings);
-//        descriptionArray = getResources().getStringArray(R.array.listing_descriptions);
 
         MyAdapter myAdapter = new MyAdapter(this, listings);
         recyclerView.setAdapter(myAdapter);

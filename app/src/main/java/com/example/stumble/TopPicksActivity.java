@@ -11,7 +11,6 @@ import java.util.List;
 public class TopPicksActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-//    private String listingArray[], descriptionArray[];
     private List<MyDatabase.Listing> listings;
     private MyDatabase db;
     @Override
@@ -19,12 +18,10 @@ public class TopPicksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_picks);
         db = new MyDatabase(this);
+        //Get selected data of type top and inflate the recycler view with the listings
         listings = db.getSelectedData("top");
 
         recyclerView = findViewById(R.id.topPicksRecyclerView);
-
-//        listingArray = getResources().getStringArray(R.array.listings);
-//        descriptionArray = getResources().getStringArray(R.array.listing_descriptions);
 
         MyAdapter myAdapter = new MyAdapter(this, listings);
         recyclerView.setAdapter(myAdapter);

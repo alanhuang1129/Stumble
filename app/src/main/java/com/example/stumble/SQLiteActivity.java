@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
+//Activity responsible purely for demo purposes to show the implementation of SQLite Database
 public class SQLiteActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText nameEdit, typeEdit, latEdit, longEdit;
