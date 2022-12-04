@@ -26,10 +26,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences sharedPrefs;
     public static final int DEFAULT = 100;
 
-    private float searchLatitude, searchLongitude;
+    private double searchLatitude, searchLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db = new MyDatabase(this);
 
         checkConnection();
+        double testLatitude = 49.104431;
+        double testLongitude = -122.801094;
+        searchLatitude = testLatitude;
+        searchLongitude = testLongitude;
 
         new ReadYelpJSONDataTask().execute(
                 "https://api.yelp.com/v3/businesses/search?latitude="
@@ -265,9 +273,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String readJSONData(String myurl) throws IOException {
         InputStream is = null;
-        // Only display the first 500 characters of the retrieved
-        // web page content.
-        int len = 2500;
+        int len = 40000000;
 
         URL url = new URL(myurl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -288,7 +294,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 is = conn.getInputStream();
 
                 // Convert the InputStream into a string
-                String contentAsString = readIt(is, len);
+//                String contentAsString = readIt(is, len);
+                String contentAsString = newReadIt(is);
                 Log.d("result", contentAsString);
                 return contentAsString;
             }
@@ -314,6 +321,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         reader.read(buffer);
         return new String(buffer);
     }
+    public String newReadIt(InputStream stream) throws IOException {
+        BufferedInputStream bis = new BufferedInputStream(stream);
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        for (int result = bis.read(); result != -1; result = bis.read()) {
+            buf.write((byte) result);
+        }
+        return buf.toString("UTF-8");
+    }
 
     private class ReadYelpJSONDataTask extends AsyncTask<String, Void, String> {
 
@@ -334,7 +349,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 Log.d("result", result);
                 JSONObject jsonObject = new JSONObject(result);
-
+                Log.d("testing", "hi");
+                JSONArray allBusinesses = new JSONArray(jsonObject.getString("businesses"));
+                for (int i = 0; i < allBusinesses.length(); i++) {
+                    JSONObject currentInnerObject = allBusinesses.getJSONObject(i);
+                    String name = currentInnerObject.getString("name");
+                    String type = "dining";
+                    String imageURL = currentInnerObject.getString("image_url");
+                    boolean isClosed = currentInnerObject.getBoolean("is_closed");
+                    double rating = currentInnerObject.getDouble("rating");
+                    String price = currentInnerObject.getString("price");
+                    String location = currentInnerObject.getString("location");
+                    double distance = currentInnerObject.getDouble("distance");
+                    long id = db.insertData(name, type, imageURL, isClosed, rating, price, location, distance);
+                    if (id < 0) {
+                        Log.d("insert", "Inserting error");
+                    }
+                    else {
+                        Log.d("insert", "Insert success");
+                    }
+                }
             } catch (Exception e) {
                 Log.d("ReadYelpJSONDataTask", e.getLocalizedMessage());
             }

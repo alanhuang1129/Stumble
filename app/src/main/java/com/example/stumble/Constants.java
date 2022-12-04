@@ -7,7 +7,12 @@ public class Constants {
     public static final String UID = "_id";
     public static final String NAME = "Name";
     public static final String TYPE = "Type";
-    public static final String LOCATION = "Location";
+    public static final String IMAGE_URL = "image_url";
+    public static final String IS_CLOSED = "is_closed";
+    public static final String RATING = "rating";
+    public static final String PRICE = "price";
+    public static final String LOCATION = "location";
+    public static final String DISTANCE = "distance";
 
     public static final int DATABASE_VERSION = 1;
 }

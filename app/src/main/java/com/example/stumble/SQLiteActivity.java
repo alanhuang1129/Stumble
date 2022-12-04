@@ -62,13 +62,13 @@ public class SQLiteActivity extends AppCompatActivity implements View.OnClickLis
                 else {
                     longVal = longEdit.getText().toString();
                 }
-                long id = db.insertData(nameVal, typeVal, latVal + "," + longVal);
-                if (id < 0) {
-                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(this, "added to database", Toast.LENGTH_SHORT).show();
-                }
+//                long id = db.insertData(nameVal, typeVal, latVal + "," + longVal);
+//                if (id < 0) {
+//                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    Toast.makeText(this, "added to database", Toast.LENGTH_SHORT).show();
+//                }
                 break;
             case R.id.removeButton:
                 if (nameEdit.getText() == null) {
