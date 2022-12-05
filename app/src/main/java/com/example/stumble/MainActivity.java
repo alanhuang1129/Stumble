@@ -6,17 +6,27 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -42,8 +52,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener, LocationListener {
     private static final String API_KEY = "ZOP5mWhWuiDXiaBGjOUHWXVsFCUTDawJ5JFPxKh1D4eth0w7lgdm_AsV_HCwgjXlDv0bagbxctRQK63Y6BOT1a4jlg7jLS1rw173U0AIl11xc-MRTgVaLCiBrj-FY3Yx";
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     private static final int REQUEST_EVENTS_ACTIVITY = 0;
     private Button eventsPageButton;
@@ -71,26 +82,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private double searchLatitude, searchLongitude;
 
+    LocationManager locationManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        eventsPageButton = (Button)findViewById(R.id.eventsPageButton);
+        eventsPageButton = (Button) findViewById(R.id.eventsPageButton);
         eventsPageButton.setOnClickListener(this);
-        diningPageButton = (Button)findViewById(R.id.diningPageButton);
+        diningPageButton = (Button) findViewById(R.id.diningPageButton);
         diningPageButton.setOnClickListener(this);
-        dessertsPageButton = (Button)findViewById(R.id.dessertsPageButton);
+        dessertsPageButton = (Button) findViewById(R.id.dessertsPageButton);
         dessertsPageButton.setOnClickListener(this);
-        topPicksPageButton = (Button)findViewById(R.id.topPicksPageButton);
+        topPicksPageButton = (Button) findViewById(R.id.topPicksPageButton);
         topPicksPageButton.setOnClickListener(this);
-        savedPageButton = (Button)findViewById(R.id.savedPageButton);
+        savedPageButton = (Button) findViewById(R.id.savedPageButton);
         savedPageButton.setOnClickListener(this);
-        distanceTextView = (TextView)findViewById(R.id.distanceTextView);
+        distanceTextView = (TextView) findViewById(R.id.distanceTextView);
         //To hide bar at the top
         getSupportActionBar().hide();
 
         mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorButton = (Button)findViewById(R.id.sensorButton);
+        sensorButton = (Button) findViewById(R.id.sensorButton);
         sensorButton.setOnClickListener(this);
 
         //seekbar
@@ -98,27 +112,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         distanceSeekBar.setOnSeekBarChangeListener(distanceSeekBarListener);
         distanceSeekBar.setMax(200);
         //Saved Preferences/SQLiteDatabase
-        savePreferencesButton = (Button)findViewById(R.id.savePreferencesButton);
+        savePreferencesButton = (Button) findViewById(R.id.savePreferencesButton);
         savePreferencesButton.setOnClickListener(this);
-        loadPreferencesButton = (Button)findViewById(R.id.loadPreferenceButton);
+        loadPreferencesButton = (Button) findViewById(R.id.loadPreferenceButton);
         loadPreferencesButton.setOnClickListener(this);
-        SQLiteButton = (Button)findViewById(R.id.SQLiteButton);
+        SQLiteButton = (Button) findViewById(R.id.SQLiteButton);
         SQLiteButton.setOnClickListener(this);
 
         //Create Database
         db = new MyDatabase(this);
 
         checkConnection();
-        double testLatitude = 49.104431;
-        double testLongitude = -122.801094;
-        searchLatitude = testLatitude;
-        searchLongitude = testLongitude;
+//        double testLatitude = 49.104431;
+//        double testLongitude = -122.801094;
+//        searchLatitude = testLatitude;
+//        searchLongitude = testLongitude;
 
-        new ReadYelpJSONDataTask().execute(
-                "https://api.yelp.com/v3/businesses/search?latitude="
-                + searchLatitude + "&longitude=" + searchLongitude
-        );
+        locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+
+//        checkLocationPermission();
+        getLocation();
+
+
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -131,6 +149,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         mySensorManager.unregisterListener(this);
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
@@ -170,8 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (sensorButtonOn) {
                     //If on, set the text (The sensor will start detecting when it is on)
                     sensorButton.setText("Shake phone to receive random event");
-                }
-                else {
+                } else {
                     //Button is off
                     sensorButton.setText("Random Event");
                 }
@@ -227,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                     }
                 }
@@ -237,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
-        switch(sensor.getType()) {
+        switch (sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
                 //If the phone is shaken downwards while the sensor is detecting
                 //Move to "Random" Activity (Not random yet)
@@ -252,6 +274,116 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+
+    private Location getLocation() {
+        Location loc = null;
+        try {
+            boolean checkGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            Log.d("checkGPS", checkGPS + "");
+//            boolean checkNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            if (checkGPS) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+//                       public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                                              int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                }
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        60000, 10, this);
+                if (locationManager != null) {
+                    loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (loc != null) {
+                        searchLatitude = loc.getLatitude();
+                        searchLongitude = loc.getLongitude();
+                        Log.d("location", "Loc: " + searchLatitude + ", " + searchLongitude);
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return loc;
+    }
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.title_location_permission)
+                        .setMessage(R.string.text_location_permission)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        String provider = "";
+        switch (requestCode) {
+
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        //Request location updates:
+                        locationManager.requestLocationUpdates(provider, 400, 1, this);
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+            }
+
+        }
+    }
+
+
     //Everything below is not implemented yet and will be moved to main activity
     //This is for getting the API to work
     public void checkConnection(){
@@ -328,6 +460,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buf.write((byte) result);
         }
         return buf.toString("UTF-8");
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        searchLatitude = location.getLatitude();
+        searchLongitude = location.getLongitude();
+        Log.d("location", searchLatitude + ", " + searchLongitude);
+        new ReadYelpJSONDataTask().execute(
+                "https://api.yelp.com/v3/businesses/search?latitude="
+                        + searchLatitude + "&longitude=" + searchLongitude
+        );
     }
 
     private class ReadYelpJSONDataTask extends AsyncTask<String, Void, String> {

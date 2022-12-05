@@ -81,6 +81,12 @@ public class MyDatabase {
         int count = db.delete(Constants.TABLE_NAME, Constants.NAME + "=?", whereArgs);
         return count;
     }
+    public int deleteRowByType(String type){
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String[] whereArgs = {type};
+        int count = db.delete(Constants.TABLE_NAME, Constants.TYPE + "=?", whereArgs);
+        return count;
+    }
 
     //Listing struct modelled towards an individual listing
     class Listing {
