@@ -20,6 +20,8 @@ public class MyHelper extends SQLiteOpenHelper {
                     Constants.RATING + " DOUBLE, " +
                     Constants.PRICE + " TEXT, " +
                     Constants.LOCATION + " TEXT, " +
+                    Constants.LATITUDE + " DOUBLE, " +
+                    Constants.LONGITUDE + " DOUBLE, " +
                     Constants.DISTANCE + " DOUBLE);" ;
 
 

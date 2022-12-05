@@ -496,6 +496,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 JSONArray allBusinesses = new JSONArray(jsonObject.getString("businesses"));
                 for (int i = 0; i < allBusinesses.length(); i++) {
                     JSONObject currentInnerObject = allBusinesses.getJSONObject(i);
+                    JSONObject coordinateObject = currentInnerObject.getJSONObject("coordinates");
                     String name = currentInnerObject.getString("name");
                     String type = "dining";
                     String imageURL = currentInnerObject.getString("image_url");
@@ -503,12 +504,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     double rating = currentInnerObject.getDouble("rating");
                     String price = currentInnerObject.getString("price");
                     String location = currentInnerObject.getString("location");
+                    double latitude = coordinateObject.getDouble("latitude");
+                    double longitude = coordinateObject.getDouble("longitude");
                     double distance = currentInnerObject.getDouble("distance");
-                    long id = db.insertData(name, type, imageURL, isClosed, rating, price, location, distance);
+                    //If the listing is not in the database, add it
+                    long id = db.insertData(name, type, imageURL, isClosed, rating, price, location, latitude, longitude, distance);
                     if (id < 0) {
                         Log.d("insert", "Inserting error");
-                    }
-                    else {
+                    } else {
                         Log.d("insert", "Insert success");
                     }
                 }

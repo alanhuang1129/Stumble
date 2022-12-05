@@ -12,6 +12,8 @@ public class Constants {
     public static final String RATING = "rating";
     public static final String PRICE = "price";
     public static final String LOCATION = "location";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
     public static final String DISTANCE = "distance";
 
     public static final int DATABASE_VERSION = 1;
