@@ -49,7 +49,7 @@
                 android:layout_width="221dp"
                 android:layout_height="58dp"
                 android:layout_weight="1"
-                android:background="#FF85C2"
+                android:backgroundTint="#FF85C2"
                 android:drawableLeft="@drawable/clear"
                 android:text="Clear Saved Listings"
                 android:textColor="#FFFFFF"

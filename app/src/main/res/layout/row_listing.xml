@@ -35,6 +35,7 @@
                 android:text="Title"
                 android:textSize="24dp"
                 android:textStyle="bold"
+                android:textColor="#5F5F5F"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/listingImage"
@@ -59,9 +60,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:layout_marginBottom="16dp"
                 android:text="Distance"
-                app:layout_constraintStart_toEndOf="@+id/listingImage"
-                tools:layout_editor_absoluteY="85dp" />
+                android:textColor="#5F5F5F"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/listingImage" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
