@@ -6,13 +6,21 @@
         <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_desserts_and_drinks.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_dining.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_events.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_filter.xml" value="0.264" />
-        <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_saved.xml" value="0.264" />
-        <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_selected.xml" value="0.20846905537459284" />
-        <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_sqlite.xml" value="0.2" />
+        <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_main.xml" value="0.17391304347826086" />
+        <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_saved.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/activity_top_picks.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/alan_/Documents/IAT359/Stumble/app/src/main/res/layout/row_listing.xml" value="0.6" />
+        <entry key="app/src/main/res/layout/activity_desserts_and_drinks.xml" value="0.259389086737149" />
+        <entry key="app/src/main/res/layout/activity_dining.xml" value="0.2693069458007813" />
+        <entry key="app/src/main/res/layout/activity_events.xml" value="0.11448834853090173" />
+        <entry key="app/src/main/res/layout/activity_filter.xml" value="0.25279271222543026" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.20334320068359377" />
+        <entry key="app/src/main/res/layout/activity_saved.xml" value="0.26944122314453123" />
+        <entry key="app/src/main/res/layout/activity_selected.xml" value="0.30284983960888057" />
+        <entry key="app/src/main/res/layout/activity_sqlite.xml" value="0.22442792372621423" />
+        <entry key="app/src/main/res/layout/activity_top_picks.xml" value="0.11448834853090173" />
+        <entry key="app/src/main/res/layout/row_listing.xml" value="0.36335877862595417" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.112" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -8,23 +8,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="409dp"
+        android:layout_height="579dp"
+        android:background="#F3E5E9"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.011">
+        app:layout_constraintVertical_bias="0.342">
 
         <Button
             android:id="@+id/eventsPageButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="220dp"
             android:layout_weight="1"
+            android:backgroundTint="#FF8EC0"
+            android:drawableLeft="@drawable/events"
             android:text="Events"
+            android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -32,31 +37,42 @@
             android:id="@+id/diningPageButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:layout_marginBottom="220dp"
             android:layout_weight="1"
+            android:backgroundTint="#FF85C2"
+            android:drawableLeft="@drawable/dinning"
             android:text="Dining"
+            android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dessertsPageButton"
+            app:layout_constraintHorizontal_bias="0.723"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/dessertsPageButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="220dp"
             android:layout_weight="1"
+            android:backgroundTint="#FF8EC0"
+            android:drawableLeft="@drawable/dessert_drinks"
             android:text="Desserts/Drinks"
+            android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/eventsPageButton"
-            app:layout_constraintTop_toBottomOf="@+id/topPicksPageButton"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintEnd_toStartOf="@+id/eventsPageButton" />
 
         <Button
             android:id="@+id/topPicksPageButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginStart="84dp"
+            android:layout_marginStart="88dp"
+            android:layout_marginTop="464dp"
             android:layout_weight="1"
+            android:backgroundTint="#FF96BF"
+            android:drawableLeft="@drawable/top_picks"
             android:text="Top Picks"
+            android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,36 +81,56 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="464dp"
             android:layout_weight="1"
+            android:backgroundTint="#FF8EC0"
+            android:drawableLeft="@drawable/saved_star"
             android:text="Saved"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.09"
             app:layout_constraintStart_toEndOf="@+id/topPicksPageButton"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/sensorButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#FF9DBE"
+        android:drawableLeft="@drawable/random"
         android:text="Random Event"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/filterSettingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginEnd="124dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginTop="4dp"
+        android:backgroundTint="#FF9DBE"
+        android:drawableLeft="@drawable/filter"
         android:text="Filter Settings"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.928"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#FFA3BE" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="52dp"
+        android:layout_height="51dp"
+        app:layout_constraintEnd_toStartOf="@+id/filterSettingsButton"
+        app:layout_constraintHorizontal_bias="0.105"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/icon_stumble"
+        tools:layout_editor_absoluteY="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
