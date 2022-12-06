@@ -11,7 +11,6 @@ import java.util.List;
 public class DiningActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-//    private String listingArray[], descriptionArray[];
     private List<MyDatabase.Listing> listings;
     private MyDatabase db;
 

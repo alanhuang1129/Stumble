@@ -73,10 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerView;
 
     private MyDatabase db;
-//    private SeekBar distanceSeekBar;
-//    private TextView distanceTextView;
-//    private Button savePreferencesButton, loadPreferencesButton;
-//    private EditText searchFilter;
     private Button filterSettingsButton;
 
     private boolean hasSaved = false;
@@ -163,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         Intent i;
-        //List of buttons
+        //List of button selections
         switch (v.getId()) {
             case R.id.eventsPageButton:
                 //Move to events activity
@@ -254,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
-
+    //Receive GPS location to feed information into the Yelp API
     private Location getLocation() {
         Location loc = null;
         try {
@@ -289,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return loc;
     }
 
+    //Check Location Method, I don't think it's being used right now
     public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -363,8 +360,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    //Everything below is not implemented yet and will be moved to main activity
     //This is for getting the API to work
     public void checkConnection(){
         ConnectivityManager connectMgr =
@@ -396,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             conn.setConnectTimeout(45000 /* milliseconds */);
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
-//            conn.setDoOutput(true);
+            //Authentication
             conn.setRequestProperty("Authorization", "Bearer " + API_KEY);
             // Starts the query
             conn.connect();
@@ -426,6 +421,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //InputStream Handling Methods
     public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
         Reader reader = null;
         reader = new InputStreamReader(stream, "UTF-8");
@@ -442,16 +438,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return buf.toString("UTF-8");
     }
 
+
     @Override
     public void onLocationChanged(@NonNull Location location) {
         searchLatitude = location.getLatitude();
         searchLongitude = location.getLongitude();
         Log.d("location", searchLatitude + ", " + searchLongitude);
-//        new ReadYelpJSONDataTask().execute(
-//                "https://api.yelp.com/v3/businesses/search?latitude="
-//                        + searchLatitude + "&longitude=" + searchLongitude
-//                        + "&radius=" + distanceSeekBar.getProgress() + "&categories=" + filterCategory
-//        );
     }
 
     private class ReadYelpJSONDataTask extends AsyncTask<String, Void, String> {
@@ -471,10 +463,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         protected void onPostExecute(String result) {
             try {
+                //Process the JSON
                 Log.d("result", result);
                 JSONObject jsonObject = new JSONObject(result);
                 Log.d("testing", "hi");
                 JSONArray allBusinesses = new JSONArray(jsonObject.getString("businesses"));
+                //For handling the JSONArray, since the Array length is dynamic
                 for (int i = 0; i < allBusinesses.length(); i++) {
                     JSONObject currentInnerObject = allBusinesses.getJSONObject(i);
                     JSONObject coordinateObject = currentInnerObject.getJSONObject("coordinates");
@@ -496,7 +490,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.d("insert", "Insert success");
                     }
 
-                    /*** ADDING THIS PART IN BREAKS SOME FUNCTIONALITY ***/
+                    /*** ADDING THIS PART IN BREAKS SOME FUNCTIONALITY
+                     * It was to insert into the top picks database for the top picks activity
+                     * Criteria is for a high review rating of 4.0 or higher***/
 //                    If rating is over 4.0, add into top picks
 //                    if (rating >= 4.0) {
 //                        long id2 = db.insertTopPicksData(name, "top", imageURL, isClosed, rating, price, location, latitude, longitude, distance);

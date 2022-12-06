@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+//Activity that houses the filters and inputs data into Shared Preferences under the name SHARED_PREFS
 public class FilterActivity extends AppCompatActivity  {
 
     private SharedPreferences sharedPrefs;

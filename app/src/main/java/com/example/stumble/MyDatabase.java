@@ -444,6 +444,18 @@ public class MyDatabase {
             lLatitude = latitude;
             lLongitude = longitude;
             lDistance = distance;
+
+            //Round distance
+            lDistance = round(lDistance, 2);
+        }
+        //Rounding method
+        public double round(double value, int places) {
+            if (places < 0) throw new IllegalArgumentException();
+
+            long factor = (long) Math.pow(10, places);
+            value = value * factor;
+            long tmp = Math.round(value);
+            return (double) tmp / factor;
         }
     }
 }

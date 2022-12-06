@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+//Activity for containing and displaying the saved listings
 public class SavedActivity extends AppCompatActivity implements View.OnClickListener{
     private Button clearSavedButton;
     private RecyclerView recyclerView;
