@@ -23,44 +23,48 @@
             android:id="@+id/eventsPageButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="220dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="192dp"
             android:layout_weight="1"
             android:backgroundTint="#FF8EC0"
             android:drawableLeft="@drawable/events"
             android:text="Events"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/diningPageButton" />
 
         <Button
             android:id="@+id/diningPageButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginBottom="220dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="192dp"
             android:layout_weight="1"
             android:backgroundTint="#FF85C2"
             android:drawableLeft="@drawable/dinning"
             android:text="Dining"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dessertsPageButton"
-            app:layout_constraintHorizontal_bias="0.723"
+            app:layout_constraintEnd_toStartOf="@+id/eventsPageButton"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/dessertsPageButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="220dp"
+            android:layout_marginStart="124dp"
+            android:layout_marginEnd="116dp"
+            android:layout_marginBottom="128dp"
             android:layout_weight="1"
             android:backgroundTint="#FF8EC0"
             android:drawableLeft="@drawable/dessert_drinks"
             android:text="Desserts/Drinks"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/eventsPageButton" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/topPicksPageButton"

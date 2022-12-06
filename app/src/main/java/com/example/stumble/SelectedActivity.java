@@ -95,9 +95,6 @@ public class SelectedActivity extends AppCompatActivity implements View.OnClickL
         new DownloadImageTask(image)
                 .execute(imageURL);
 
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(SelectedActivity.this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION}, 100);
-//        }
     }
 
     @Override

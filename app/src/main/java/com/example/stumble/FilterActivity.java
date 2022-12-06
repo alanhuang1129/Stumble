@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+//Activity that houses the filters and inputs data into Shared Preferences under the name SHARED_PREFS
 public class FilterActivity extends AppCompatActivity  {
 
     private SharedPreferences sharedPrefs;
@@ -25,6 +26,8 @@ public class FilterActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
+        //To hide bar at the top
+        getSupportActionBar().hide();
         db = new MyDatabase(this);
 
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);

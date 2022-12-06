@@ -12,7 +12,7 @@
         android:layout_height="52dp"
         android:layout_weight="1"
         android:background="#FBD2E9"
-        android:text="Filte"
+        android:text="Filter"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="30sp"

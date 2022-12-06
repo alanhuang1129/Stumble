@@ -46,6 +46,7 @@
             android:layout_marginTop="32dp"
             android:text="Title"
             android:textSize="24dp"
+            android:textColor="#5F5F5F"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
@@ -54,11 +55,12 @@
             android:id="@+id/isClosedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginTop="85dp"
             android:text="Is Closed"
-            android:textSize="12dp"
-            app:layout_constraintStart_toEndOf="@+id/titleTextView"
-            tools:layout_editor_absoluteY="289dp" />
+            android:textSize="20dp"
+            android:textColor="#5F5F5F"
+            app:layout_constraintStart_toEndOf="@+id/ratingTextView"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <WebView
             android:id="@+id/webView"
@@ -74,7 +76,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="364dp"
+            android:backgroundTint="#FF7AC4"
+            android:rotationX="-360"
             android:text="View On Google Maps"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +92,8 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="68dp"
             android:text="Distance (m)"
-            android:textSize="12dp"
+            android:textColor="#5F5F5F"
+            android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
@@ -106,11 +112,11 @@
 
         <Button
             android:id="@+id/saveListing"
-            android:layout_width="92dp"
-            android:layout_height="33dp"
-            android:layout_marginTop="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="76dp"
             android:layout_marginEnd="28dp"
-            android:background="#FF7AC4"
+            android:backgroundTint="#FF7AC4"
             android:drawableLeft="@drawable/saved_star"
             android:text="Save"
             android:textColor="#FFFFFF"
