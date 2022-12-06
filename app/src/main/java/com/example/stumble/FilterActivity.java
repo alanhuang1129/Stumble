@@ -19,11 +19,13 @@ public class FilterActivity extends AppCompatActivity  {
     private SeekBar distanceSeekBar;
     private TextView distanceTextView;
     private EditText searchFilter;
+    private MyDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
+        db = new MyDatabase(this);
 
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
         searchFilter = (EditText) findViewById(R.id.filterEditText);
@@ -44,6 +46,7 @@ public class FilterActivity extends AppCompatActivity  {
         editor.putInt("Distance", distanceSeekBar.getProgress());
         editor.putString("Filter", searchFilter.getText().toString());
         editor.commit();
+        db.deleteRowByType("dining");
         super.onStop();
     }
 
