@@ -6,25 +6,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import java.util.List;
+
 public class DiningActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private String listingArray[], descriptionArray[];
+//    private String listingArray[], descriptionArray[];
+    private List<MyDatabase.Listing> listings;
+    private MyDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dining);
+        db = new MyDatabase(this);
+        //Get selected data of type dining and inflate the recycler view with the listings
+        listings = db.getSelectedData("dining");
 
         recyclerView = findViewById(R.id.diningRecyclerView);
 
-        listingArray = getResources().getStringArray(R.array.listings);
-        descriptionArray = getResources().getStringArray(R.array.listing_descriptions);
-
-        MyAdapter myAdapter = new MyAdapter(this, listingArray, descriptionArray);
+        MyAdapter myAdapter = new MyAdapter(this, listings);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         getSupportActionBar().hide();
 
+    }
+
+    @Override
+    protected void onStop() {
+        db.deleteRowByType("dining");
+        super.onStop();
     }
 }
