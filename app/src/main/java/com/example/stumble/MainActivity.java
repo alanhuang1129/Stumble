@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MyDatabase db;
     private Button filterSettingsButton;
 
-    private boolean hasSaved = false;
     private SharedPreferences sharedPrefs;
     public static final int DEFAULT = 10000;
 

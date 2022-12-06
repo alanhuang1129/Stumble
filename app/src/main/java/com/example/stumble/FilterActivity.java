@@ -26,6 +26,8 @@ public class FilterActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
+        //To hide bar at the top
+        getSupportActionBar().hide();
         db = new MyDatabase(this);
 
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
