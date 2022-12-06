@@ -56,6 +56,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener, LocationListener {
     private static final String API_KEY = "ZOP5mWhWuiDXiaBGjOUHWXVsFCUTDawJ5JFPxKh1D4eth0w7lgdm_AsV_HCwgjXlDv0bagbxctRQK63Y6BOT1a4jlg7jLS1rw173U0AIl11xc-MRTgVaLCiBrj-FY3Yx";
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    public static final String SHARED_PREFS = "sharedPrefs";
 
     private static final int REQUEST_EVENTS_ACTIVITY = 0;
     private Button eventsPageButton;
@@ -72,10 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerView;
 
     private MyDatabase db;
-    private SeekBar distanceSeekBar;
-    private TextView distanceTextView;
-    private Button savePreferencesButton, loadPreferencesButton;
-    private EditText searchFilter;
+//    private SeekBar distanceSeekBar;
+//    private TextView distanceTextView;
+//    private Button savePreferencesButton, loadPreferencesButton;
+//    private EditText searchFilter;
+    private Button filterSettingsButton;
 
     private boolean hasSaved = false;
     private SharedPreferences sharedPrefs;
@@ -101,8 +103,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         topPicksPageButton.setOnClickListener(this);
         savedPageButton = (Button) findViewById(R.id.savedPageButton);
         savedPageButton.setOnClickListener(this);
-        distanceTextView = (TextView) findViewById(R.id.distanceTextView);
-        searchFilter = (EditText) findViewById(R.id.filterEditText);
+        filterSettingsButton = (Button) findViewById(R.id.filterSettingsButton);
+        filterSettingsButton.setOnClickListener(this);
         //To hide bar at the top
         getSupportActionBar().hide();
 
@@ -110,15 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sensorButton = (Button) findViewById(R.id.sensorButton);
         sensorButton.setOnClickListener(this);
 
-        //seekbar
-        distanceSeekBar = (SeekBar) findViewById(R.id.distanceSeekBar);
-        distanceSeekBar.setOnSeekBarChangeListener(distanceSeekBarListener);
-        distanceSeekBar.setMax(40000);
-        //Saved Preferences/SQLiteDatabase
-        savePreferencesButton = (Button) findViewById(R.id.savePreferencesButton);
-        savePreferencesButton.setOnClickListener(this);
-        loadPreferencesButton = (Button) findViewById(R.id.loadPreferenceButton);
-        loadPreferencesButton.setOnClickListener(this);
+        sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
         //Create Database
         db = new MyDatabase(this);
@@ -137,13 +131,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        filterCategory = searchFilter.getText() + "";
+        filterCategory = sharedPrefs.getString("Filter", "");
+        int seekBarProgress = sharedPrefs.getInt("Distance", 0);
         new ReadYelpJSONDataTask().execute(
                 "https://api.yelp.com/v3/businesses/search?latitude="
                         + searchLatitude + "&longitude=" + searchLongitude
-                        + "&radius=" + distanceSeekBar.getProgress() + "&categories=" + filterCategory
+                        + "&radius=" + seekBarProgress + "&categories=" + filterCategory
         );
     }
+
 
     @Override
     protected void onResume() {
@@ -206,51 +202,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     sensorButton.setText("Random Event");
                 }
                 break;
-            case R.id.savePreferencesButton:
-                //Save the preferences
-                sharedPrefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                editor.putInt("Distance", distanceSeekBar.getProgress());
-                editor.putString("Filter", searchFilter.getText().toString());
-                editor.commit();
-                hasSaved = true;
-                break;
-            case R.id.loadPreferenceButton:
-                //Load the preferences
-                if (hasSaved) {
-                    int seekBarPreference = sharedPrefs.getInt("Distance", DEFAULT);
-                    filterCategory = sharedPrefs.getString("Filter", "");
-                    searchFilter.setText(filterCategory);
-                    distanceSeekBar.setProgress(seekBarPreference);
-                }
+            case R.id.filterSettingsButton:
+                i = new Intent(this, FilterActivity.class);
+                getResult.launch(i);
                 break;
         }
     }
 
-    private SeekBar.OnSeekBarChangeListener distanceSeekBarListener = new SeekBar.OnSeekBarChangeListener() {
 
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            distanceTextView.setText("Distance (" + progress + "m)");
-            //Tried to implement shared preferences within the seekbar
-            //Did not work as intended...
-//            sharedPrefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPrefs.edit();
-//            editor.putInt("Distance", progress);
-//            editor.commit();
-//            Log.d("seekbar", sharedPrefs.getInt("Distance", DEFAULT) + "");
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-    };
     //Method for explicit intents
     ActivityResultLauncher<Intent> getResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
