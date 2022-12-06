@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int DEFAULT = 100;
 
     private double searchLatitude, searchLongitude;
+    private String filterCategory;
 
     LocationManager locationManager;
 
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //seekbar
         distanceSeekBar = (SeekBar) findViewById(R.id.distanceSeekBar);
         distanceSeekBar.setOnSeekBarChangeListener(distanceSeekBarListener);
-        distanceSeekBar.setMax(200);
+        distanceSeekBar.setMax(40000);
         //Saved Preferences/SQLiteDatabase
         savePreferencesButton = (Button) findViewById(R.id.savePreferencesButton);
         savePreferencesButton.setOnClickListener(this);
@@ -123,10 +124,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db = new MyDatabase(this);
 
         checkConnection();
-//        double testLatitude = 49.104431;
-//        double testLongitude = -122.801094;
-//        searchLatitude = testLatitude;
-//        searchLongitude = testLongitude;
 
         locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
@@ -135,6 +132,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getLocation();
 
 
+    }
+    //API search every onStart()
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new ReadYelpJSONDataTask().execute(
+                "https://api.yelp.com/v3/businesses/search?latitude="
+                        + searchLatitude + "&longitude=" + searchLongitude
+                        + "&radius=" + distanceSeekBar.getProgress() + "&categories=" + filterCategory
+        );
     }
 
     @Override
@@ -223,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            distanceTextView.setText("Distance (" + progress + "km)");
+            distanceTextView.setText("Distance (" + progress + "m)");
             //Tried to implement shared preferences within the seekbar
             //Did not work as intended...
 //            sharedPrefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
@@ -467,10 +474,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         searchLatitude = location.getLatitude();
         searchLongitude = location.getLongitude();
         Log.d("location", searchLatitude + ", " + searchLongitude);
-        new ReadYelpJSONDataTask().execute(
-                "https://api.yelp.com/v3/businesses/search?latitude="
-                        + searchLatitude + "&longitude=" + searchLongitude
-        );
+//        new ReadYelpJSONDataTask().execute(
+//                "https://api.yelp.com/v3/businesses/search?latitude="
+//                        + searchLatitude + "&longitude=" + searchLongitude
+//                        + "&radius=" + distanceSeekBar.getProgress() + "&categories=" + filterCategory
+//        );
     }
 
     private class ReadYelpJSONDataTask extends AsyncTask<String, Void, String> {

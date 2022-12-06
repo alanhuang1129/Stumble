@@ -56,7 +56,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         new DownloadImageTask(holder.listingImage)
                 .execute(imageURL);
         holder.listingTitle.setText(name);
-        holder.listingDescription.setText(rating + " stars");
+        holder.listingDescription.setText(rating + " Stars");
+        holder.distanceTextView.setText(distance + "m");
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +83,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView listingTitle, listingDescription;
+        TextView listingTitle, listingDescription, distanceTextView;
         ImageView listingImage;
         ConstraintLayout mainLayout;
         public MyViewHolder(@NonNull View itemView) {
@@ -91,6 +92,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             listingTitle = itemView.findViewById(R.id.titleTextView);
             listingDescription = itemView.findViewById(R.id.descriptionTextView);
             mainLayout = itemView.findViewById(R.id.mainLayout);
+            distanceTextView = itemView.findViewById(R.id.distanceTextView);
         }
     }
 

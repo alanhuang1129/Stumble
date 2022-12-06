@@ -31,4 +31,10 @@ public class DiningActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
     }
+
+    @Override
+    protected void onStop() {
+        db.deleteRowByType("dining");
+        super.onStop();
+    }
 }

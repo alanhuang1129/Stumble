@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.location.LocationListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -37,10 +38,11 @@ import java.io.InputStream;
 //Activity responsible for acting as the page with the listing description and details
 public class SelectedActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button googleMapsButton;
-    private TextView titleTextView, ratingTextView;
+    private Button googleMapsButton, saveButton;
+    private TextView titleTextView, ratingTextView, isClosedTextView, distanceTextView;
     private ImageView image;
     private WebView locationView;
+    private MyDatabase db;
 
     private String name, type, imageURL, price, location;
     private double rating, latitude, longitude, distance;
@@ -55,9 +57,14 @@ public class SelectedActivity extends AppCompatActivity implements View.OnClickL
 
         googleMapsButton = (Button) findViewById(R.id.googleMapsButton);
         googleMapsButton.setOnClickListener(this);
+        saveButton = (Button) findViewById(R.id.saveListing);
+        saveButton.setOnClickListener(this);
+        db = new MyDatabase(this);
 
         titleTextView = (TextView) findViewById(R.id.titleTextView);
         ratingTextView = (TextView) findViewById(R.id.ratingTextView);
+        isClosedTextView = (TextView) findViewById(R.id.isClosedTextView);
+        distanceTextView = (TextView) findViewById(R.id.distanceTextView);
         image = (ImageView) findViewById(R.id.listingImage);
         locationView = (WebView) findViewById(R.id.webView);
         locationView.loadUrl("https://www.google.com/maps/search/" + titleTextView.getText() + "/@" +
@@ -78,6 +85,8 @@ public class SelectedActivity extends AppCompatActivity implements View.OnClickL
 
         titleTextView.setText(name);
         ratingTextView.setText(rating + " Stars");
+        isClosedTextView.setText(isClosed + "");
+        distanceTextView.setText(distance + "m");
 
         new DownloadImageTask(image)
                 .execute(imageURL);
@@ -98,6 +107,11 @@ public class SelectedActivity extends AppCompatActivity implements View.OnClickL
                 Log.d("web", maps.toString());
                 Log.d("web", longitude + ", " + latitude);
                 getResult.launch(webIntent);
+                break;
+            case R.id.saveListing:
+                //Save listing by inserting into saved database
+                db.insertSavedData(name, "saved", imageURL, isClosed, rating, price, location, latitude, longitude, distance);
+                Toast.makeText(this, "Listing Saved", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
