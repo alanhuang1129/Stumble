@@ -34,6 +34,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,11 +75,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SeekBar distanceSeekBar;
     private TextView distanceTextView;
     private Button savePreferencesButton, loadPreferencesButton;
+    private EditText searchFilter;
 
-    private Button SQLiteButton;
-
+    private boolean hasSaved = false;
     private SharedPreferences sharedPrefs;
-    public static final int DEFAULT = 100;
+    public static final int DEFAULT = 10000;
 
     private double searchLatitude, searchLongitude;
     private String filterCategory;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         savedPageButton = (Button) findViewById(R.id.savedPageButton);
         savedPageButton.setOnClickListener(this);
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
+        searchFilter = (EditText) findViewById(R.id.filterEditText);
         //To hide bar at the top
         getSupportActionBar().hide();
 
@@ -117,8 +119,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         savePreferencesButton.setOnClickListener(this);
         loadPreferencesButton = (Button) findViewById(R.id.loadPreferenceButton);
         loadPreferencesButton.setOnClickListener(this);
-        SQLiteButton = (Button) findViewById(R.id.SQLiteButton);
-        SQLiteButton.setOnClickListener(this);
 
         //Create Database
         db = new MyDatabase(this);
@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
+        filterCategory = searchFilter.getText() + "";
         new ReadYelpJSONDataTask().execute(
                 "https://api.yelp.com/v3/businesses/search?latitude="
                         + searchLatitude + "&longitude=" + searchLongitude
@@ -210,18 +211,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 sharedPrefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 editor.putInt("Distance", distanceSeekBar.getProgress());
+                editor.putString("Filter", searchFilter.getText().toString());
                 editor.commit();
+                hasSaved = true;
                 break;
             case R.id.loadPreferenceButton:
                 //Load the preferences
-                int seekBarPreference = sharedPrefs.getInt("Distance", DEFAULT);
-                distanceSeekBar.setProgress(seekBarPreference);
-                break;
-            case R.id.SQLiteButton:
-                //Head to SQLite Database Activity (This activity is purely for demo
-                //Will remove this activity later because an API will insert the data instead
-                i = new Intent(this, SQLiteActivity.class);
-                getResult.launch(i);
+                if (hasSaved) {
+                    int seekBarPreference = sharedPrefs.getInt("Distance", DEFAULT);
+                    filterCategory = sharedPrefs.getString("Filter", "");
+                    searchFilter.setText(filterCategory);
+                    distanceSeekBar.setProgress(seekBarPreference);
+                }
                 break;
         }
     }
@@ -270,9 +271,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case Sensor.TYPE_ACCELEROMETER:
                 //If the phone is shaken downwards while the sensor is detecting
                 //Move to "Random" Activity (Not random yet)
-                if (Math.abs(sensorEvent.values[1]) > 10.4 && detectShake) {
+                if (Math.abs(sensorEvent.values[1]) > 11.0 && detectShake) {
                     Intent i = new Intent(this, SelectedActivity.class);
-                    getResult.launch(i);
+                    MyDatabase.Listing randomListing = db.getRandomListing();
+                    if (randomListing != null) {
+                        i.putExtra("Name", randomListing.lName);
+                        i.putExtra("Type", randomListing.lType);
+                        i.putExtra("Image", randomListing.lImageUrl);
+                        i.putExtra("IsClosed", randomListing.lIsClosed);
+                        i.putExtra("Rating", randomListing.lRating);
+                        i.putExtra("Price", randomListing.lPrice);
+                        i.putExtra("Location", randomListing.lLocation);
+                        i.putExtra("Latitude", randomListing.lLatitude);
+                        i.putExtra("Longitude", randomListing.lLongitude);
+                        i.putExtra("Distance", randomListing.lDistance);
+                        getResult.launch(i);
+                    }
                 }
         }
     }
@@ -522,6 +536,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         Log.d("insert", "Insert success");
                     }
+
+                    /*** ADDING THIS PART IN BREAKS SOME FUNCTIONALITY ***/
+//                    If rating is over 4.0, add into top picks
+//                    if (rating >= 4.0) {
+//                        long id2 = db.insertTopPicksData(name, "top", imageURL, isClosed, rating, price, location, latitude, longitude, distance);
+//                        if (id2 < 0) {
+//                            Log.d("insert", "Inserting top picks error");
+//                        } else {
+//                            Log.d("insert", "Insert top picks success");
+//                        }
+//                    }
                 }
             } catch (Exception e) {
                 Log.d("ReadYelpJSONDataTask", e.getLocalizedMessage());

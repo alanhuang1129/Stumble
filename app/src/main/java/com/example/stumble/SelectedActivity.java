@@ -85,7 +85,11 @@ public class SelectedActivity extends AppCompatActivity implements View.OnClickL
 
         titleTextView.setText(name);
         ratingTextView.setText(rating + " Stars");
-        isClosedTextView.setText(isClosed + "");
+        if (isClosed) {
+            isClosedTextView.setText("Closed");
+        } else {
+            isClosedTextView.setText("Open");
+        }
         distanceTextView.setText(distance + "m");
 
         new DownloadImageTask(image)

@@ -19,7 +19,7 @@ public class TopPicksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_top_picks);
         db = new MyDatabase(this);
         //Get selected data of type top and inflate the recycler view with the listings
-        listings = db.getSelectedData("top");
+        listings = db.getSelectedTopPicksData("top");
 
         recyclerView = findViewById(R.id.topPicksRecyclerView);
 
@@ -27,5 +27,11 @@ public class TopPicksActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         getSupportActionBar().hide();
+    }
+
+    @Override
+    protected void onStop() {
+        db.deleteTopPicksRowByType("top");
+        super.onStop();
     }
 }

@@ -17,6 +17,7 @@ public class Constants {
     public static final String DISTANCE = "distance";
 
     public static final String SAVED_TABLE_NAME = "SAVEDTABLE";
+    public static final String TOP_PICKS_TABLE_NAME = "TOPPICKSTABLE";
 
     public static final int DATABASE_VERSION = 1;
 }
